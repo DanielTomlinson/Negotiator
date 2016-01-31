@@ -115,21 +115,12 @@ public final class Negotiator {
 	}
 
 	public func negotiate(requestedContentTypes: [ContentType]) -> ContentType? {
-		let validContentTypes = requestedContentTypes.filter { $0.params?.0 != "q" || $0.params?.1.numberValue != 0.0  }
-
-		for contentType in validContentTypes {
-			for ac in availableContentTypes {
-				if contentType == ac {
-					return contentType
-				}
-			}
-		}
-
-		return nil
+		return requestedContentTypes 
+			.filter { $0.params?.0 != "q" || $0.params?.1.numberValue != 0.0 }
+			.filter { availableContentTypes.contains($0) }
+			.first	
 	}
 }
-
-
 
 private func fuzzyMatch(first: String, _ second: String) -> Bool {
 	switch (first, second) {
