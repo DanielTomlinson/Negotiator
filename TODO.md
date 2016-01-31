@@ -1,0 +1,2 @@
+- [] Language negotiation
+- [] Character encoding negotiation
