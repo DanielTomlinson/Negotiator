@@ -74,3 +74,23 @@ describe("ContentType matching") {
 		try expect(b == a).beTrue()
 	}
 }
+
+describe("Negotiator") {
+	let supportedContentTypes = [ContentType(fromMimetype: "text/html")!, ContentType(fromMimetype: "application/json")!]
+	let sut = Negotiator(availableContentTypes: supportedContentTypes)
+
+	$0.it("Should return nil if you search for only unsupported content types") {
+		let requestedContentTypes = [ContentType(fromMimetype: "fairy/dust")!]
+		let type = sut.negotiate(requestedContentTypes)
+
+		try expect(type).beNil()
+	}
+
+	$0.it("Should provide the highest priority requested content type") {
+		let requestedContentTypes = [ContentType(fromMimetype: "fairy/dust")!, ContentType(fromMimetype: "application/json")!, ContentType(fromMimetype: "text/html")!]
+		let type = sut.negotiate(requestedContentTypes)
+
+		try expect(type?.type) == "application"
+		try expect(type?.subtype) == "json"
+	}
+}
