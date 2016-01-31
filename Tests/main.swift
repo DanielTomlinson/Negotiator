@@ -95,4 +95,11 @@ describe("Negotiator") {
 		try expect(type?.type) == "application"
 		try expect(type?.subtype) == "json"
 	}
+
+	$0.it("Should not return types with a 0.0 quality param") {
+		let requestedContentTypes = [ContentType(fromMimetype: "text/html;q=0.0")!]
+		let type = sut.negotiate(requestedContentTypes)
+
+		try expect(type).beNil()
+	}
 }

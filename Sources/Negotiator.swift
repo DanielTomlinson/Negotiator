@@ -114,8 +114,10 @@ public final class Negotiator {
 		self.availableContentTypes = availableContentTypes
 	}
 
-	func negotiate(requestedContentTypes: [ContentType]) -> ContentType? {
-		for contentType in requestedContentTypes {
+	public func negotiate(requestedContentTypes: [ContentType]) -> ContentType? {
+		let validContentTypes = requestedContentTypes.filter { $0.params?.0 != "q" || $0.params?.1.numberValue != 0.0  }
+
+		for contentType in validContentTypes {
 			for ac in availableContentTypes {
 				if contentType == ac {
 					return contentType
